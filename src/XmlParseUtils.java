@@ -29,13 +29,13 @@ public class XmlParseUtils {
                         if (name.equals("return-phrase")) {
                             resultBean.word = parser.nextText();
                         } else if (name.equals("content")) {
-                            customBuffer.append(parser.nextText() + "\n");
+                            customBuffer.append(parser.nextText() + "<br />");
                         } else if (name.equals("key")) {
                             webBuffer.append(parser.nextText() + ": ");
                             trans = true;
                         } else if (name.equals("value")) {
                             if (trans) {
-                                webBuffer.append(parser.nextText() + "\n");
+                                webBuffer.append(parser.nextText() + "<br />");
                             }
                             trans = false;
                         }

@@ -10,6 +10,7 @@ import com.intellij.openapi.ui.popup.JBPopupFactory;
 import com.intellij.ui.JBColor;
 import org.apache.http.util.TextUtils;
 
+import javax.swing.*;
 import java.awt.*;
 
 /**
@@ -33,12 +34,11 @@ public class TranslateAction extends AnAction {
             public void onSuccess(ResultBean resultBean) {
                 System.out.println(resultBean.toString());
                 StringBuffer targetText = new StringBuffer();
+                targetText.append("<html>");
                 targetText.append(resultBean.word);
-                targetText.append("\n");
+                targetText.append("<br />");
                 targetText.append(resultBean.custom);
-//                targetText.append("\n");
-//                targetText.append("网络释义:\n\n");
-//                targetText.append(resultBean.web);
+                targetText.append("</html>");
                 showPopupBalloon(editor, targetText.toString());
             }
 
@@ -54,9 +54,20 @@ public class TranslateAction extends AnAction {
         ApplicationManager.getApplication().invokeLater(new Runnable() {
             public void run() {
                 JBPopupFactory factory = JBPopupFactory.getInstance();
-                factory.createHtmlTextBalloonBuilder(result, null, new Color(255, 255, 255), null)
+                JLabel jLabel = new JLabel(result);
+                Color backgroundColor = new Color(255, 255, 255);
+                Color borderColor = new Color(0, 0, 0, 30);
+                Color transparentColor = new Color(0, 0, 0, 0);
+                jLabel.setForeground(Color.BLACK);
+                jLabel.setBackground(transparentColor);
+                factory.createBalloonBuilder(jLabel)
+                        .setBorderColor(borderColor)
+                        .setFillColor(backgroundColor)
                         .createBalloon()
                         .show(factory.guessBestPopupLocation(editor), Balloon.Position.below);
+//                factory.createHtmlTextBalloonBuilder(result, null, new Color(255, 255, 255), null)
+//                        .createBalloon()
+//                        .show(factory.guessBestPopupLocation(editor), Balloon.Position.below);
             }
         });
     }
